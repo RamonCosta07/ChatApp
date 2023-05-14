@@ -14,13 +14,15 @@ interface IProps {
 }
 
 const SideBarChats = ({ userChat, setUserChat }: IProps) => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const refChat = query(
     collection(db, "chats"),
     where("users", "array-contains", user?.email)
   );
   const [chatSnapshot] = useCollection(refChat);
+
+  console.log(userChat);
 
   return (
     <S.Container>
@@ -32,7 +34,7 @@ const SideBarChats = ({ userChat, setUserChat }: IProps) => {
               users={item.data().users}
               user={user}
               setUserChat={setUserChat}
-              //active={userChat?.chatId === item.id ? "active" : ""}
+              userChat={userChat}
             />
           )}
         </S.Content>

@@ -44,4 +44,4 @@ const ChatBody = ({ chatId }: IChatBody) => {
   )
 }
 
-export default ChatBody
+export default ChatBody;

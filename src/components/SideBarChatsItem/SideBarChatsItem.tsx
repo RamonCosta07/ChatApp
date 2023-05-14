@@ -8,6 +8,19 @@ import { MdPerson } from "react-icons/md";
 import { query, collection, where, getDocs } from "firebase/firestore";
 // Hooks
 import { useEffect, useState } from "react";
+// Interface
+interface IUserChatString {
+  chatId: string;
+  name: string;
+  photoURL: string | null;
+}
+
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  photoURL: string | null;
+}
 
 const getUser = (users: string[], userLogged: User | null) => {
   return users.find((user) => user !== userLogged?.email) ?? "";
@@ -17,9 +30,9 @@ const getUser = (users: string[], userLogged: User | null) => {
 interface ISideBarChatsItemProps {
   id: string;
   users: string[];
-  user?: User | null; // Usar User corretamente na interface
+  user?: User | null;
   setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
-  //active: string;
+  userChat: string;
 }
 
 const SideBarChatsItem = ({
@@ -27,10 +40,12 @@ const SideBarChatsItem = ({
   users,
   user,
   setUserChat,
+  userChat,
 }: ISideBarChatsItemProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  
+  const [chatData, setChatData] = useState<IUserChatString | null>(null);
+
   const getUserItem = async (users: string[], user: User) => {
     const q = query(
       collection(db, "users"),
@@ -41,7 +56,7 @@ const SideBarChatsItem = ({
       console.log("No matching documents.");
       return null;
     }
-    const userItem = querySnapshot.docs[0].data();
+    const userItem = querySnapshot.docs[0].data() as IUser;
     return userItem;
   };
 
@@ -56,13 +71,24 @@ const SideBarChatsItem = ({
     getAvatar();
   }, []);
 
+  useEffect(() => {
+    if (userChat) {
+      try {
+        const parsedChatData = JSON.parse(userChat) as IUserChatString;
+        setChatData(parsedChatData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [userChat]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   const item = getUser(users, user!);
 
-  const handleNewChat = async() => {
+  const handleNewChat = async () => {
     const userChat = {
       chatId: id,
       name: item.split("@")[0],
@@ -72,8 +98,11 @@ const SideBarChatsItem = ({
     setUserChat(JSON.stringify(userChat));
   };
 
+  console.log(chatData?.chatId);
+  console.log(id);
+
   return (
-    <S.Container onClick={handleNewChat}>
+    <S.Container onClick={handleNewChat} className={chatData?.chatId === id ? "active" : ""}>
       {avatarUrl ? <S.Avatar src={avatarUrl} /> : <MdPerson />}
       <S.Name>{item.split("@")[0]}</S.Name>
     </S.Container>
@@ -81,3 +110,4 @@ const SideBarChatsItem = ({
 };
 
 export default SideBarChatsItem;
+

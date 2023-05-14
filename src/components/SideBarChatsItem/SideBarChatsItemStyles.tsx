@@ -21,7 +21,7 @@ export const Container = styled.div`
     }
 
     &.active{
-        background-color: #F0F2F5;
+        background-color: #bdbdd3;
     }
 `
 
