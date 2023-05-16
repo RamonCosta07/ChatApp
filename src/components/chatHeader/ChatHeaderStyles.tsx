@@ -54,3 +54,8 @@ export const Options = styled.div`
     cursor: pointer;
   }
 `;
+
+export const DisabledIcon = styled.span`
+  pointer-events: none;
+  opacity: 0.5;
+`;

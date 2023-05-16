@@ -17,10 +17,16 @@ const ChatHeader = ({ photoURL, name }: IProps) => {
           <S.Name>{name}</S.Name>
         </S.NameContent>
       </S.UserInfo>
+
       <S.Options>
-        <MdSearch />
-        <MdMoreVert />
+        <S.DisabledIcon>
+          <MdSearch />
+        </S.DisabledIcon>
+        <S.DisabledIcon>
+          <MdMoreVert />
+        </S.DisabledIcon>
       </S.Options>
+      
     </S.Container>
   );
 };

@@ -3,7 +3,7 @@ import { useState } from "react";
 // CSS
 import * as S from "./SideBarHeaderStyles";
 // Icons
-import { MdDonutLarge, MdChat, MdMoreVert, MdSearch } from "react-icons/md";
+import { MdDonutLarge, MdChat, MdMoreVert } from "react-icons/md";
 // E-mail validator
 import * as EmailValidator from "email-validator";
 // Firebase
@@ -11,6 +11,8 @@ import { auth, db } from "../../services/firebase";
 import { collection, query, where, addDoc, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
+// Components
+import Modal from "../modal/Modal";
 // Interface
 interface ISideBarHeaderProps {
   setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
@@ -37,12 +39,13 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
     } else {
       const userExists = await checkUserExists(emailInput);
       if (!userExists) {
-        setErrorMessage("Usuário não registrado no sistema!");
+        setErrorMessage("Usuário não registrado no sistema");
       } else {
         await addDoc(chatRef, {
           users: [user?.email, emailInput],
         });
-        setSuccessMessage("Cadastrado com sucesso");
+        setErrorMessage("");
+        setSuccessMessage("Adicionado com sucesso");
         setTimeout(() => {
           closeModal();
         }, 2000);
@@ -97,27 +100,15 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
         </S.DisabledIcon>
       </S.Options>
 
-      {isModalOpen && (
-        <S.ModalOverlay>
-          <S.ModalContent>
-            <h2>Adicionar Novo Chat</h2>
-            <input
-              type="text"
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              placeholder="Digite o e-mail"
-            />
-            <MdSearch onClick={handleCreateChat} title="Pesquisar e-mail" />
-            {errorMessage && <S.Error>{errorMessage}</S.Error>}
-            {successMessage && <S.Success>{successMessage}</S.Success>}
-            {!successMessage && (
-              <S.CloseButton onClick={closeModal} title="Fechar modal">
-                <S.CloseIcon />
-              </S.CloseButton>
-            )}
-          </S.ModalContent>
-        </S.ModalOverlay>
-      )}
+      <Modal
+        isModalOpen={isModalOpen}
+        emailInput={emailInput}
+        setEmailInput={setEmailInput}
+        handleCreateChat={handleCreateChat}
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+        closeModal={closeModal}
+      />
     </S.Container>
   );
 };
