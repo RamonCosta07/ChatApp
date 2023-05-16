@@ -9,7 +9,7 @@ const Default = () => {
       <MdMessage />
       <S.Title>ChatApp</S.Title>
       <S.Info>
-        Você pode enviar mensagem sem ter que manter o celular conectado. Que
+        Agora você pode enviar mensagem sem ter que usar o seu número de celular. Que
         demais!
       </S.Info>
     </S.Container>

@@ -3,7 +3,7 @@ import { MdDonutLarge, MdChat, MdMoreVert } from "react-icons/md";
 import * as EmailValidator from "email-validator";
 // Firebase
 import { auth, db } from "../../services/firebase";
-import { collection, query, where, addDoc } from "firebase/firestore";
+import { collection, query, where, addDoc, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 // Interface
@@ -27,16 +27,29 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
     } else if (chatExists(emailInput)) {
       return alert("Chat já existe!");
     }
+  
+    const userExists = await checkUserExists(emailInput);
+    if (!userExists) {
+      return alert("Usuário não registrado no sistema!");
+    }
+  
     await addDoc(chatRef, {
       users: [user?.email, emailInput],
     });
   };
 
+  const checkUserExists = async (email: string) => {
+    const userQuery = query(collection(db, "users"), where("email", "==", email));
+    const userSnapshot = await getDocs(userQuery);
+    return !userSnapshot.empty;
+  };
+
   const chatExists = (emailChat: string) => {
-    const chat = chatSnapshot?.docs.find(chat => chat.data().users.includes(emailChat));
+    const chat = chatSnapshot?.docs.find((chat) =>
+      chat.data().users.includes(emailChat)
+    );
     return chat != null && chat.data().users.length > 0 ? chat : null;
   };
-  
 
   return (
     <S.Container>

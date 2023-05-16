@@ -83,7 +83,7 @@ const SideBarChatsItem = ({
   }, [userChat]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Carregando...</div>;
   }
 
   const item = getUser(users, user!);
