@@ -1,5 +1,10 @@
+// Hooks
+import { useState } from "react";
+// CSS
 import * as S from "./SideBarHeaderStyles";
-import { MdDonutLarge, MdChat, MdMoreVert } from "react-icons/md";
+// Icons
+import { MdDonutLarge, MdChat, MdMoreVert, MdSearch } from "react-icons/md";
+// E-mail validator
 import * as EmailValidator from "email-validator";
 // Firebase
 import { auth, db } from "../../services/firebase";
@@ -12,30 +17,37 @@ interface ISideBarHeaderProps {
 }
 
 const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [user] = useAuthState(auth);
   const chatRef = collection(db, "chats");
   const refChat = query(chatRef, where("users", "array-contains", user?.email));
   const [chatSnapshot] = useCollection(refChat);
 
   const handleCreateChat = async () => {
-    const emailInput = prompt("Escreva o e-mail que deseja adicionar");
-    if (!emailInput) return;
     if (!EmailValidator.validate(emailInput)) {
-      return alert("E-mail inválido!");
+      setErrorMessage("E-mail inválido!");
     } else if (emailInput === user?.email) {
-      return alert("O e-mail deve ser diferente do seu");
+      setErrorMessage("O e-mail deve ser diferente do seu");
     } else if (chatExists(emailInput)) {
-      return alert("Chat já existe!");
+      setErrorMessage("Chat já existe!");
+    } else {
+      const userExists = await checkUserExists(emailInput);
+      if (!userExists) {
+        setErrorMessage("Usuário não registrado no sistema!");
+      } else {
+        await addDoc(chatRef, {
+          users: [user?.email, emailInput],
+        });
+        setSuccessMessage("Cadastrado com sucesso");
+        setTimeout(() => {
+          closeModal();
+        }, 2000);
+      }
     }
-
-    const userExists = await checkUserExists(emailInput);
-    if (!userExists) {
-      return alert("Usuário não registrado no sistema!");
-    }
-
-    await addDoc(chatRef, {
-      users: [user?.email, emailInput],
-    });
   };
 
   const checkUserExists = async (email: string) => {
@@ -54,6 +66,17 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
     return chat != null && chat.data().users.length > 0 ? chat : null;
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEmailInput("");
+    setErrorMessage("");
+    setSuccessMessage("");
+  };
+
   return (
     <S.Container>
       <S.Avatar
@@ -68,11 +91,33 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
         <S.DisabledIcon>
           <MdDonutLarge />
         </S.DisabledIcon>
-        <MdChat onClick={handleCreateChat} title="Adicionar contato" />
+        <MdChat onClick={openModal} title="Adicionar chat" />
         <S.DisabledIcon>
           <MdMoreVert />
         </S.DisabledIcon>
       </S.Options>
+
+      {isModalOpen && (
+        <S.ModalOverlay>
+          <S.ModalContent>
+            <h2>Adicionar Novo Chat</h2>
+            <input
+              type="text"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              placeholder="Digite o e-mail"
+            />
+            <MdSearch onClick={handleCreateChat} title="Pesquisar e-mail" />
+            {errorMessage && <S.Error>{errorMessage}</S.Error>}
+            {successMessage && <S.Success>{successMessage}</S.Success>}
+            {!successMessage && (
+              <S.CloseButton onClick={closeModal} title="Fechar modal">
+                <S.CloseIcon />
+              </S.CloseButton>
+            )}
+          </S.ModalContent>
+        </S.ModalOverlay>
+      )}
     </S.Container>
   );
 };

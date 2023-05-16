@@ -79,7 +79,7 @@ const SideBarChatsItem = ({
         const parsedChatData = JSON.parse(userChat) as IUserChatString;
         setChatData(parsedChatData);
       } catch (error) {
-        console.error(error);
+        console.error(error); 
       }
     }
   }, [userChat]);
