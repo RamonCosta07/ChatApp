@@ -18,7 +18,7 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
   const [chatSnapshot] = useCollection(refChat);
 
   const handleCreateChat = async () => {
-    const emailInput = prompt("Escreva o e-mail correspondente");
+    const emailInput = prompt("Escreva o e-mail que deseja adicionar");
     if (!emailInput) return;
     if (!EmailValidator.validate(emailInput)) {
       return alert("E-mail inválido!");

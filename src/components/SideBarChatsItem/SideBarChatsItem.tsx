@@ -98,9 +98,6 @@ const SideBarChatsItem = ({
     setUserChat(JSON.stringify(userChat));
   };
 
-  console.log(chatData?.chatId);
-  console.log(id);
-
   return (
     <S.Container onClick={handleNewChat} className={chatData?.chatId === id ? "active" : ""}>
       {avatarUrl ? <S.Avatar src={avatarUrl} /> : <MdPerson />}

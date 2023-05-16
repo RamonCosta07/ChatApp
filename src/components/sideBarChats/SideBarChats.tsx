@@ -22,8 +22,6 @@ const SideBarChats = ({ userChat, setUserChat }: IProps) => {
   );
   const [chatSnapshot] = useCollection(refChat);
 
-  console.log(userChat);
-
   return (
     <S.Container>
       {chatSnapshot?.docs.map((item) => (
