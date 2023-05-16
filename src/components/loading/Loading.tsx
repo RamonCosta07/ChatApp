@@ -1,10 +1,10 @@
-import { Container } from "./LoadingStyles";
+import * as S from "./LoadingStyles";
 
 const Loading = () => {
   return (
-    <Container>
-      <h2>Carregando</h2>
-    </Container>
+    <S.Container>
+      <S.Loading />
+    </S.Container>
   );
 };
 

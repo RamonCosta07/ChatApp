@@ -27,19 +27,22 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
     } else if (chatExists(emailInput)) {
       return alert("Chat já existe!");
     }
-  
+
     const userExists = await checkUserExists(emailInput);
     if (!userExists) {
       return alert("Usuário não registrado no sistema!");
     }
-  
+
     await addDoc(chatRef, {
       users: [user?.email, emailInput],
     });
   };
 
   const checkUserExists = async (email: string) => {
-    const userQuery = query(collection(db, "users"), where("email", "==", email));
+    const userQuery = query(
+      collection(db, "users"),
+      where("email", "==", email)
+    );
     const userSnapshot = await getDocs(userQuery);
     return !userSnapshot.empty;
   };
@@ -59,11 +62,16 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
           auth.signOut();
           setUserChat(null);
         }}
+        title="Clique para fazer logout"
       />
       <S.Options>
-        <MdDonutLarge />
-        <MdChat onClick={handleCreateChat} />
-        <MdMoreVert />
+        <S.DisabledIcon>
+          <MdDonutLarge />
+        </S.DisabledIcon>
+        <MdChat onClick={handleCreateChat} title="Adicionar contato" />
+        <S.DisabledIcon>
+          <MdMoreVert />
+        </S.DisabledIcon>
       </S.Options>
     </S.Container>
   );

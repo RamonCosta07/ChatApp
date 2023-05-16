@@ -8,7 +8,9 @@ import { MdPerson } from "react-icons/md";
 import { query, collection, where, getDocs } from "firebase/firestore";
 // Hooks
 import { useEffect, useState } from "react";
-// Interface
+// Components
+import Loading from "../loading/Loading";
+// Interfaces
 interface IUserChatString {
   chatId: string;
   name: string;
@@ -83,7 +85,7 @@ const SideBarChatsItem = ({
   }, [userChat]);
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <Loading />
   }
 
   const item = getUser(users, user!);
