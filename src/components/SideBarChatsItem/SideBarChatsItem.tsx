@@ -24,11 +24,6 @@ interface IUser {
   photoURL: string | null;
 }
 
-const getUser = (users: string[], userLogged: User | null) => {
-  return users.find((user) => user !== userLogged?.email) ?? "";
-};
-
-// Interface
 interface ISideBarChatsItemProps {
   id: string;
   users: string[];
@@ -36,6 +31,10 @@ interface ISideBarChatsItemProps {
   setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
   userChat: string;
 }
+
+const getUser = (users: string[], userLogged: User | null) => {
+  return users.find((user) => user !== userLogged?.email) ?? "";
+};
 
 const SideBarChatsItem = ({
   id,

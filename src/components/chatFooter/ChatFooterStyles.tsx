@@ -21,6 +21,10 @@ export const Form = styled.form`
   align-items: center;
   gap: 5px;
   width: 100%;
+
+  & svg{
+    cursor: pointer;
+  }
 `;
 
 export const Input = styled.input`

@@ -16,13 +16,19 @@ interface IMessage {
 
 const Message = ({ user, message }: IMessageProps) => {
   const [userLoggedIn] = useAuthState(auth);
+  const formattedDate = new Date(message.timestamp).toLocaleString('pt-BR', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  });
+
   return (
     <S.Container>
       <S.Line className={userLoggedIn?.email === user ? "me" : ""}>
         <S.Content>
           <S.Message>{message.message}</S.Message>
           <S.MessageDate>
-            {new Date(message?.timestamp).toLocaleString()}
+            {formattedDate}
           </S.MessageDate>
         </S.Content>
       </S.Line>

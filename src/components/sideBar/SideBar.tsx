@@ -5,13 +5,12 @@ import SideBarChats from "../sideBarChats/SideBarChats";
 import SideBarHeader from "../sideBarHeader/SideBarHeader";
 import Menu from "../menu/Menu";
 // Interface
-interface IProps {
-  userChat: string;
+interface ISideBarProps {
   setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
+  userChat: string;
 }
 
-const SideBar = ({ setUserChat, userChat }: IProps) => {
-
+const SideBar = ({ setUserChat, userChat }: ISideBarProps) => {
   return (
     <S.Container>
       <Menu />

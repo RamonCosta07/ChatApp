@@ -48,11 +48,11 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
 
   const handleCreateChat = async () => {
     if (!EmailValidator.validate(emailInput)) {
-      setErrorMessage("E-mail inválido!");
+      setErrorMessage("E-mail inválido");
     } else if (emailInput === user?.email) {
       setErrorMessage("O e-mail deve ser diferente do seu");
     } else if (chatExists(emailInput)) {
-      setErrorMessage("Chat já existe!");
+      setErrorMessage("Chat já existe");
     } else {
       const userExists = await checkUserExists(emailInput);
       if (!userExists) {
@@ -110,6 +110,7 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
         </S.DisabledIcon>
 
         <MdChat onClick={openModal} title="Adicionar chat" />
+        
         <MdMoreVert onClick={handleOpenNavbar} />
         {isNavbarOpen && <Navbar handleSignOut={handleSignOut} />}
       </S.Options>

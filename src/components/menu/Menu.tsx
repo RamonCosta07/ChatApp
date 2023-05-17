@@ -12,8 +12,8 @@ import { MenuContext } from "../../contexts/MenuContext";
 
 const Menu = () => {
   const { isMenuOpen, toggleMenu } = useContext(MenuContext);
-    const [user] = useAuthState(auth);
-    
+  const [user] = useAuthState(auth);
+
   const handleToggleMenu = () => {
     toggleMenu();
   };
@@ -41,7 +41,7 @@ const Menu = () => {
 
         <S.InfoApp>
           Esse não é o seu nome de usuário. Esse nome será exibido aos seus
-          contatos. Poderá alterá-lo pelo Google.
+          contatos. Poderá alterá-lo pela conta Google.
         </S.InfoApp>
       </S.BodyMenu>
 
