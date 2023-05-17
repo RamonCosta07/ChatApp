@@ -10,9 +10,7 @@ import { BsWhatsapp } from "react-icons/bs";
 const Login = () => {
   const handleSignIn = async () => {
     try {
-      const userCred = await signInWithPopup(auth, provider);
-      const user = userCred.user;
-      console.log(user);
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.log(error);
     }

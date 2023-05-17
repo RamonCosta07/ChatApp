@@ -14,6 +14,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 // Components
 import Modal from "../modal/Modal";
+import Navbar from "../navbar/Navbar";
 // Interface
 interface ISideBarHeaderProps {
   setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
@@ -24,10 +25,20 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const { isMenuOpen, toggleMenu } = useContext(MenuContext);
+  const { toggleMenu } = useContext(MenuContext);
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const handleToggleMenu = () => {
     toggleMenu();
+  };
+
+  const handleOpenNavbar = () => {
+    setIsNavbarOpen((prevState) => !prevState);
+  };
+
+  const handleSignOut = () => {
+    auth.signOut();
+    setUserChat(null);
   };
 
   const [user] = useAuthState(auth);
@@ -94,23 +105,13 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
         title="Clique para mais informações"
       />
       <S.Options>
-
-        <button
-          onClick={() => {
-            auth.signOut();
-            setUserChat(null);
-          }}
-        >
-          Sair
-        </button>
-        
         <S.DisabledIcon>
           <MdDonutLarge />
         </S.DisabledIcon>
+
         <MdChat onClick={openModal} title="Adicionar chat" />
-        <S.DisabledIcon>
-          <MdMoreVert />
-        </S.DisabledIcon>
+        <MdMoreVert onClick={handleOpenNavbar} />
+        {isNavbarOpen && <Navbar handleSignOut={handleSignOut} />}
       </S.Options>
 
       <Modal
