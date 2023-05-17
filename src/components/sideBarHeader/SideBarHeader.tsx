@@ -1,5 +1,6 @@
 // Hooks
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MenuContext } from "../../contexts/MenuContext";
 // CSS
 import * as S from "./SideBarHeaderStyles";
 // Icons
@@ -23,6 +24,11 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const { isMenuOpen, toggleMenu } = useContext(MenuContext);
+
+  const handleToggleMenu = () => {
+    toggleMenu();
+  };
 
   const [user] = useAuthState(auth);
   const chatRef = collection(db, "chats");
@@ -84,13 +90,20 @@ const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
     <S.Container>
       <S.Avatar
         src={user?.photoURL?.toString()}
-        onClick={() => {
-          auth.signOut();
-          setUserChat(null);
-        }}
-        title="Clique para fazer logout"
+        onClick={handleToggleMenu}
+        title="Clique para mais informações"
       />
       <S.Options>
+
+        <button
+          onClick={() => {
+            auth.signOut();
+            setUserChat(null);
+          }}
+        >
+          Sair
+        </button>
+        
         <S.DisabledIcon>
           <MdDonutLarge />
         </S.DisabledIcon>
