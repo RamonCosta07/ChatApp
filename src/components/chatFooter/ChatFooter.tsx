@@ -7,39 +7,53 @@ import { MdSend } from "react-icons/md";
 // Firebase
 import { auth, db } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { collection, addDoc, serverTimestamp, FieldValue } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 // Interfaces
-interface IMessage {
-  message: string;
-  user: string;
-  photoURL?: string;
-  timestamp: FieldValue;
-}
+import {
+  IChatFooterProps,
+  IMessage,
+} from "../../interfaces/Components/IChatFooter";
 
-interface IChatInput {
-  chatId: string;
-}
-
-const ChatFooter = ({ chatId }: IChatInput) => {
+const ChatFooter = ({ chatId }: IChatFooterProps) => {
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSendMessage = (
+    e: React.FormEvent<HTMLFormElement> | null = null
+  ) => {
+    if (e) {
+      e.preventDefault();
+    }
 
     const newMessage: IMessage = {
       message,
       user: user?.email ?? "",
-      photoURL: user?.photoURL ?? '',
+      photoURL: user?.photoURL ?? "",
       timestamp: serverTimestamp(),
     };
 
     try {
-      const messagesCollectionRef = collection(db, "chats", chatId, "messages");
-      await addDoc(messagesCollectionRef, newMessage);
-      setMessage("");
+      setTimeout(async () => {
+        const messagesCollectionRef = collection(
+          db,
+          "chats",
+          chatId,
+          "messages"
+        );
+        await addDoc(messagesCollectionRef, newMessage);
+        setMessage("");
+      }, 100);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleTextareaKeyPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
     }
   };
 
@@ -49,6 +63,7 @@ const ChatFooter = ({ chatId }: IChatInput) => {
         <S.Input
           placeholder="Mensagem"
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => handleTextareaKeyPress(e)}
           value={message}
         />
         <MdSend onClick={handleSendMessage} />

@@ -1,6 +1,5 @@
 // Hooks
 import { useState, useContext } from "react";
-import { MenuContext } from "../../contexts/MenuContext";
 // CSS
 import * as S from "./SideBarHeaderStyles";
 // Icons
@@ -15,18 +14,20 @@ import { useCollection } from "react-firebase-hooks/firestore";
 // Components
 import Modal from "../modal/Modal";
 import Navbar from "../navbar/Navbar";
-// Interface
-interface ISideBarHeaderProps {
-  setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
-}
+// Contexts
+import { MenuContext } from "../../contexts/MenuContext";
+import { UserChatContext } from "../../contexts/UserChatContext";
 
-const SideBarHeader = ({ setUserChat }: ISideBarHeaderProps) => {
+const SideBarHeader = () => {
+  // states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const { toggleMenu } = useContext(MenuContext);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  // contexts
+  const { toggleMenu } = useContext(MenuContext);
+  const { setUserChat } = useContext(UserChatContext);
 
   const handleToggleMenu = () => {
     toggleMenu();

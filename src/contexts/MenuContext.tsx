@@ -1,20 +1,15 @@
-import React, { useState, createContext, ReactNode } from "react";
-
-interface MenuContextProps {
-  isMenuOpen: boolean;
-  toggleMenu: () => void;
-}
-
-interface MenuProviderProps {
-  children: ReactNode;
-}
+// React
+import React, { useState, createContext } from "react";
+// Interfaces
+import { IProviderProps } from "../interfaces/Contexts/IContexts";
+import { MenuContextProps } from "../interfaces/Contexts/IMenu";
 
 const MenuContext = createContext<MenuContextProps>({
   isMenuOpen: false,
   toggleMenu: () => {},
 });
 
-const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
+const MenuProvider: React.FC<IProviderProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {

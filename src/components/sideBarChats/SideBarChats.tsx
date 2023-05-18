@@ -2,18 +2,13 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../services/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { collection, query, where } from "firebase/firestore";
 // CSS
 import * as S from "./SideBarChatsStyles";
 // Components
-import SideBarChatsItem from "../SideBarChatsItem/SideBarChatsItem";
-import { collection, query, where } from "firebase/firestore";
-// Interface
-interface IProps {
-  userChat: string;
-  setUserChat: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import SideBarChatsItem from "../sideBarChatsItem/SideBarChatsItem";
 
-const SideBarChats = ({ userChat, setUserChat }: IProps) => {
+const SideBarChats = () => {
   const [user] = useAuthState(auth);
 
   const refChat = query(
@@ -31,8 +26,6 @@ const SideBarChats = ({ userChat, setUserChat }: IProps) => {
               id={item.id}
               users={item.data().users}
               user={user}
-              setUserChat={setUserChat}
-              userChat={userChat}
             />
           )}
         </S.Content>

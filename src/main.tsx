@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import GlobalStyle from "./styles/global.tsx";
 import { MenuProvider } from "./contexts/MenuContext.tsx";
+import { UserChatProvider } from "./contexts/UserChatContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <GlobalStyle />
-    <MenuProvider>
-      <App />
-    </MenuProvider>
+    <UserChatProvider>
+      <MenuProvider>
+        <App />
+      </MenuProvider>
+    </UserChatProvider>
   </React.StrictMode>
 );

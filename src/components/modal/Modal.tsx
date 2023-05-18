@@ -1,16 +1,11 @@
+// CSS
 import * as S from "./ModalStyles";
+// Icon
 import { MdSearch } from "react-icons/md";
+// Hooks
 import { useRef, useEffect } from "react";
 // Interface
-interface IModal {
-  isModalOpen: boolean;
-  emailInput: string;
-  setEmailInput: React.Dispatch<React.SetStateAction<string>>;
-  handleCreateChat: () => void;
-  errorMessage: string | null;
-  successMessage: string | null;
-  closeModal: () => void;
-}
+import { IModal } from "../../interfaces/Components/IModal";
 
 const Modal = ({
   isModalOpen,

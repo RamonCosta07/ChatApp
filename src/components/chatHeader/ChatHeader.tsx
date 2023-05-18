@@ -3,12 +3,9 @@ import * as S from "./ChatHeaderStyles";
 // Icons
 import { MdPerson, MdMoreVert, MdSearch } from "react-icons/md";
 // Interface
-interface IProps {
-  photoURL?: string;
-  name: string;
-}
+import { IChatHeaderProps } from "../../interfaces/Components/IChatHeader";
 
-const ChatHeader = ({ photoURL, name }: IProps) => {
+const ChatHeader = ({ photoURL, name }: IChatHeaderProps) => {
   return (
     <S.Container>
       <S.UserInfo>
@@ -26,7 +23,6 @@ const ChatHeader = ({ photoURL, name }: IProps) => {
           <MdMoreVert />
         </S.DisabledIcon>
       </S.Options>
-      
     </S.Container>
   );
 };

@@ -1,9 +1,9 @@
+// CSS
 import { NavbarMenu } from "./NavbarStyles";
-interface IProps {
-  handleSignOut: () => void;
-}
+// Interface
+import { INavbarProps } from '../../interfaces/Components/INavbar';
 
-const Navbar = ({ handleSignOut }: IProps) => {
+const Navbar = ({ handleSignOut }: INavbarProps) => {
   return (
     <NavbarMenu>
       <button onClick={handleSignOut}>Desconectar</button>

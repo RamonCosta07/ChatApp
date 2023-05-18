@@ -3,7 +3,7 @@ import { auth, provider } from "../../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 // Styles
 import * as S from "./LoginStyles";
-// Icon
+// Icons
 import { FaGoogle } from "react-icons/fa";
 import { BsWhatsapp } from "react-icons/bs";
 

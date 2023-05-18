@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import TextareaAutosize from "react-textarea-autosize";
 
 export const Container = styled.div`
   height: 62px;
@@ -22,16 +23,42 @@ export const Form = styled.form`
   gap: 5px;
   width: 100%;
 
-  & svg{
+  & svg {
     cursor: pointer;
   }
 `;
 
-export const Input = styled.input`
-  padding: 10px;
-  outline: none;
-  border: none;
-  border-radius: 5px;
+export const Input = styled(TextareaAutosize)`
   width: 100%;
-  box-shadow: inset 0 0 1px 1px #0003;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  max-height: 3.5rem;
+
+  /* Estilo do scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #ccc;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #ccc;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+    cursor: auto;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
 `;
