@@ -5,7 +5,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, query, where } from "firebase/firestore";
 // CSS
 import * as S from "./SideBarChatsStyles";
-// Componentss
+// Components
 import SideBarChatsItem from "../sideBarChatsItem/SideBarChatsItem";
 
 const SideBarChats = () => {
