@@ -1,22 +1,20 @@
 // CSS
-import { Container } from "./ChatBodyStyles";
+import * as S from "./ChatBodyStyles";
 // Hooks
-import { useEffect, useRef } from "react";
-// Firebase
-import { db } from "../../services/firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { collection, query, orderBy } from "firebase/firestore";
+import { useEffect, useRef, useContext } from "react";
+import { useSearchMessages } from "../../customHooks/useSearchMessages";
 // Components
 import Message from "../message/Message";
+import SearchButtons from "../searchButtons/SearchButtons";
 // Interface
 import { IChatBody } from "../../interfaces/Components/IChatBody";
+// Context
+import { SearchContext } from "../../contexts/SearchContext";
 
 const ChatBody = ({ chatId }: IChatBody) => {
-  const messagesQuery = query(
-    collection(db, "chats", chatId, "messages"),
-    orderBy("timestamp", "asc")
-  );
-  const [messagesRes] = useCollection(messagesQuery);
+  const { searchTerm } = useContext(SearchContext);
+  const { messagesRes, handlePrevious, handleNext, highlightedMessages } =
+    useSearchMessages(chatId, searchTerm);
 
   const refBody = useRef<HTMLDivElement | null>(null);
 
@@ -30,19 +28,40 @@ const ChatBody = ({ chatId }: IChatBody) => {
     }
   }, [messagesRes]);
 
-  return (
-    <Container ref={refBody}>
-      {messagesRes?.docs.map((message) => (
+  const renderedMessages = messagesRes?.docs.map((message) => {
+    const isHighlighted = message
+      .data()
+      .message.toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return (
+      <S.MessageContainer
+        key={message.id}
+        highlighted={isHighlighted && searchTerm !== "" ? "true" : "false"}
+        className={isHighlighted? "message highlighted" : "message"}
+        id={message.id}
+      >
         <Message
-          key={message.id}
           user={message.data().user}
           message={{
             message: message.data().message,
             timestamp: message.data().timestamp?.toDate().getTime(),
           }}
         />
-      ))}
-    </Container>
+      </S.MessageContainer>
+    );
+  });
+
+  return (
+    <S.Container ref={refBody}>
+      {renderedMessages}
+      {searchTerm !== "" && highlightedMessages.length > 0 && (
+        <SearchButtons
+          handlePrevious={handlePrevious}
+          handleNext={handleNext}
+        />
+      )}
+    </S.Container>
   );
 };
 

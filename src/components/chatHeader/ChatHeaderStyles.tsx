@@ -1,3 +1,4 @@
+import { MdClose } from "react-icons/md";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -27,6 +28,7 @@ export const UserInfo = styled.div`
 
 export const NameContent = styled.div`
   display: grid;
+  cursor: default;
 `;
 
 export const Name = styled.span`
@@ -58,4 +60,34 @@ export const Options = styled.div`
 export const DisabledIcon = styled.span`
   pointer-events: none;
   opacity: 0.5;
+`;
+
+export const SearchContainer = styled.div`
+  position: absolute;
+  top: 9.5%;
+  right: 5%;
+  display: flex;
+  align-items: center;
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+
+  &:focus {
+    border-color: #888;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+export const CloseIcon = styled(MdClose)`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 `;
