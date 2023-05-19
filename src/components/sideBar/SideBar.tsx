@@ -1,7 +1,7 @@
 // CSS
 import * as S from "./SideBarStyles";
 // Components
-import SideBarChats from "../sideBarChats/SideBarChats";
+import SideBarChats from "../SideBarChats/SideBarChats";
 import SideBarHeader from "../sideBarHeader/SideBarHeader";
 import Menu from "../menu/Menu";
 
